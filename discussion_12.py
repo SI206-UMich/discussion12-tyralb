@@ -16,8 +16,8 @@ def setUpDatabase(db_name):
 # TASK 1
 # CREATE TABLE FOR EMPLOYEE INFORMATION IN DATABASE AND ADD INFORMATION
 def create_employee_table(cur, conn):
-    # cur.execute("DROP TABLE IF EXISTS Employees")
-    cur.execute("CREATE TABLE IF NOT EXISTS Employees(employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, job_id INTEGER, hire_date DATE, salary NUMBER)")
+    cur.execute("DROP TABLE IF EXISTS employees")
+    cur.execute("CREATE TABLE IF NOT EXISTS employees(employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, job_id INTEGER, hire_date DATE, salary NUMBER)")
     conn.commit()
 
 # ADD EMPLOYEE'S INFORMTION TO THE TABLE
@@ -40,14 +40,17 @@ def add_employee(filename, cur, conn):
         job_id = employee["job_id"]
         salary = employee["salary"]
   
-        cur.execute("INSERT OR IGNORE INTO Employees (employee_id, first_name, last_name, job_id, hire_date, salary) VALUES (?,?,?,?,?,?)",(emp_id, first_name, last_name, hire_date, job_id, salary))
-        conn.commit()
+        cur.execute("INSERT OR IGNORE INTO employees (employee_id, first_name, last_name, job_id, hire_date, salary) VALUES (?,?,?,?,?,?)",(emp_id, first_name, last_name, hire_date, job_id, salary))
+    conn.commit()
 
 # TASK 2: GET JOB AND HIRE_DATE INFORMATION
 def job_and_hire_date(cur, conn):
     # Select hire_date from Employees and job_title from Jobs table and join them on job_id (INNER JOIN
 
-    cur.execute("SELECT Jobs.job_title, Employees.hire_date FROM Jobs JOIN Employees ON Jobs.job_id = Employees.job_id ORDER BY Employees.hire_date LIMIT 1")
+    cur.execute("SELECT jobs.job_title, employees.hire_date FROM jobs JOIN employees ON jobs.job_id = employees.job_id ORDER BY employees.hire_date LIMIT 1")
+    job_title = cur.fetchall()
+    print(job_title)
+    # return job_title[0]
 
 # TASK 3: IDENTIFY PROBLEMATIC SALARY DATA
 # Apply JOIN clause to match individual employees
